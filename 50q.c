@@ -1,6 +1,163 @@
 #include <stdio.h>
 #include <string.h>
 
+// 1
+
+void maiorElem() {
+	int i, maior;
+
+	assert (scanf("%d", &i) == 1);
+	if (i==0){
+		printf("Não é possivel executar\n");
+	}
+	else {
+		maior = i;
+	}
+
+	while (i!=0){
+		assert (scanf("%d", &i) == 1);
+		if (i > maior){
+			maior = i;
+		}
+	}
+	printf("%d\n",maior);
+}
+
+// 2 
+
+void media() {
+	int i, media;
+
+	assert (scanf("%d",&i) == 1);
+
+	if (i == 0){
+		printf("Média é 0");
+	}
+	else {
+		media = i;
+	}
+
+	while (i != 0) {
+		assert (scanf("%d",&i) == 1);
+		media = media + i;
+	}
+	printf ("Média é %.2lf\n", media/2.0);
+}
+
+// 3
+
+void sndMaior() {
+
+	int fst,snd,i;
+
+	assert (scanf ("%d", &i) == 1);
+
+	if (i==0) {
+		printf("O segundo maior é 0\n");
+		return ;
+	}
+	else {
+		fst = i;
+	}
+
+	assert (scanf ("%d", &i) == 1);
+
+	if (i==0) {
+		if (fst > i) {
+			printf("O segundo maior é %d\n", i);
+			return ;
+		}
+		else {
+			printf("O segundo maior é %d\n", fst);
+			return ;
+		}
+	}
+	else {
+		snd = i;
+	}
+
+	while (i != 0) {
+		assert (scanf ("%d", &i) == 1);
+
+		if (i>=fst && i<=snd) {
+			fst = i;
+		}
+		else if (i>=snd && i<=fst) {
+			snd = i;
+		}
+		else if (i >= fst && i >= snd && fst >= snd) {
+			snd = i;
+		}
+		else if (i >= fst && i >= snd && fst <= snd) {
+		 	fst = i;
+		}
+	}
+
+	if (fst > snd) {
+		printf("O segundo maior é %d\n", snd);
+	}
+	else {
+		printf("O segundo maior é %d\n", fst);
+	}
+}
+
+
+
+
+// 4
+int bitsUm (unsigned int n){
+	int x = 0;
+	if (n == 0){
+		return 0;
+	}
+	else{
+		while (n > 1){
+		if (n%2 != 0){
+			x++;
+		}
+		n = n/2;
+	}
+	return (x+1);
+	}
+}
+
+// 5
+	
+int trailingZ (unsigned int n) {
+
+	int x = 0;
+
+	if (n==0) {
+		return 0;
+	}
+	else {
+		while (n>1) {
+			if (n%2 == 0) {
+				x++;	
+			}
+			n = n/2;
+		}
+		return x;
+	}
+}
+
+
+// 6
+int qDig (unsigned int n){
+	int x = 0;
+	if (n == 0){
+		return 1;
+	}
+	else{
+		while (n >= 1){
+			x++;
+			n = n/10;
+		}
+		return x;
+	}
+}
+
+
 //7
 char *mystrcat (char s1[], char s2[]) {
     int i, j;
