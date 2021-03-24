@@ -136,6 +136,10 @@ void truncW (char t[], int n){
     }
 }
 
+//14
+char charMaisfreq (char s[]){
+    if (*s == '')
+}
 
 
 
