@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 // 1
 
@@ -294,17 +295,377 @@ void truncW (char t[], int n){
 }
 
 //14
-char charMaisfreq (char s[]){
-    if (*s == '')
+
+int charQuantidade (char c, char s[]){
+	int r = 0;
+
+	for (int i = 0; s[i] != '\0'; i++){
+		if (c == s[i]) r++;
+	}
+	return r;
 }
+
+char charMaisfreq (char s[]){
+	int r = 0, t = 0;
+	char c;
+
+    if (strlen(s) == 0) return 0;
+	else {
+		for (int i = 0; s[i] != '\0'; i++){
+			if (charQuantidade (s[i], s) > r){
+				r = charQuantidade(s[i], s);
+				t = i;
+			}
+		}
+		return s[t];
+	}
+}
+
+//15
+
+int calculaConsecutivos (char s[]){
+	int r = 1;
+
+	for (int i = 0; s[i] == s[i+1]; i++, r++);
+	return r;
+}
+
+int iguaisConsecutivos (char s[]){
+	int r = 0;
+
+	for (int i = 0; s[i] != '\0'; i++){
+		if(calculaConsecutivos(s+i)>r) r = calculaConsecutivos(s+i);
+	}
+	return r;
+}
+
+//16
+int pertenceCarateres (char c, char s2[], int k){
+	int i, r = 0;
+	for(i = 0; i<k; i++){
+		if(s2[i]==c) r=1;
+	}
+	return r;
+}
+
+int difConsecutivos (char s[]){
+	int N = strlen(s), i, x, r = 0;
+
+	for(i=0; i<N; i++){
+		x = pertenceCarateres(s[i], s, i);
+		if (!x){
+			r++;
+		}
+	}
+	return r;
+}
+
+// 17
+
+int maiorPrefixo (char s1 [], char s2 []){
+	int i;
+	for(i = 0; s1 && s2 && s1[i]==s2[i]; i++);
+	return i;
+}
+
+// 18
+int maiorSufixo (char s1 [], char s2 []){
+	int N1 = strlen(s1), N2=strlen(s2), min, i, r=0;
+	if(N1<N2) min = N1;
+	else min = N2;
+
+	for(i=min-1; i>=0; i--, N1--, N2--){
+		if(s1[N1-1]==s2[N2-1]) r++;
+		else break;
+	}
+	return r;
+}
+
+// 19
+
+int checkPosterior (char s1[], char s2[], int k){
+	int i, j;
+	for(i=k, j=0; s1[i] == s2[j] && s1[i] && s2[j]; i++, j++);
+	return i;
+}
+
+int sufPref (char s1[], char s2[]){
+	int N=strlen(s1), i, j;
+
+	for(i=0; s1[i]; i++){
+		if(s1[i]==s2[0]){
+			int x = checkPosterior(s1, s2, i);
+			if(N==x) return (N-i);
+		}
+	}
+	return 0;
+}
+
+// 20
+int contaPal (char s[]){
+	int i=0,j = 0;
+	while(s[i]){
+		if(s[i]!=' ' && s[i]!='\n'){
+			while(s[i]!=' ' && s[i]) i++;
+			j++;
+		}
+		else i++;
+	}
+	return j;
+}
+
+//21
+int contaVogais (char s[]){
+	int i = 0, r=0;
+	while(s[i]){
+		if(s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' || s[i] == 'A' || s[i]== 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U') r++;
+		i++;
+	}
+	return r;
+}
+
+//22
+int contida (char a[], char b[]){
+	int i = 0, j = 0, r = 0;
+	for(j = 0; a[j]; j++){
+		for(i = 0; b[i]; i++){
+			if(b[i]==a[j]){r++; break;}
+		}
+	}
+	return(r==strlen(a));
+}
+
+//23
+int palindorome (char s[]){
+	int N = 0;
+	for(N=0; s[N];N++);
+	int i;
+	for(i=0; s[i] == s[N-i-1] && i<N/2; i++);
+	return(i==N/2);
+}
+
+//24
+void shiftEsquerda(char s[]){
+	int i;
+	for(i = 0; s[i]; i++) s[i] = s[i+1];
+}
+
+int remRep (char x[]){
+	int i = 0, r;
+	while(x[i]){
+		if(x[i]==x[i+1]){
+			shiftEsquerda(x+i);
+		} 
+		else i++;
+	}
+	return i;
+}
+
+//25
+int limpaEspacos (char t[]){
+	int i=0;
+	while(t[i]){
+		if(t[i]==' ' && t[i]==t[i+1]) shiftEsquerda(t+i);
+		else i++;
+	}
+	return i;
+}
+
+//26
+void shiftDireita(int v[], int N){
+	int i;
+	for(i=N-1; i>0; i--) v[i] = v[i-1];
+}
+
+void insere (int v[], int N, int x){
+	int i;
+	for(i=0; v[i] && v[i]<x; i++);
+	shiftDireita(v+i,N-i+1);
+	v[i]=x;
+}
+
+// 27
+void merge (int r [], int a[], int b[], int na, int nb){
+	int i, j, nr;
+	for(i = 0, j = 0, nr = 0; i<na && j<nb;){
+		if(a[i]<b[j]){ 
+			r[nr] = a[i];
+			i++;
+			nr++;
+		}
+		else{
+			r[nr] = b[j];
+			j++;
+			nr++;
+		}
+	}
+	if(i==na){
+		while(j<nb){
+			r[nr] = b[j];
+			j++;
+			nr++;
+		}
+	}
+	else if (j == nb){
+		while(i<na){
+			r[nr] = a[i];
+			i++;
+			nr++;
+		}		
+	}
+}
+
+// 28
+int crescente (int a[], int i, int j){
+	int r = 1;
+	while(i<j){
+		if(a[i+1]<a[i]) r = 0;
+		i++;
+	}
+	return r;
+}
+
+//29
+void shiftEsquerdaArray(int v[], int N){
+	int i;
+	for(i=0; i<N; i++) v[i] = v[i+1];
+}
+
+int retiraNeg (int v[], int N){
+	int i;
+	for(i=0; i<N;){
+		if(v[i]<0){
+			shiftEsquerdaArray(v+i, N-i);
+			N--;
+		}
+		else i++;
+	}
+}
+
+// 30
+int frequencia(int v[], int N){
+    int i, r=0;
+    if(N == 0) return 0;
+    for(i=0; i<N-1 && v[i]==v[i+1]; i++) r++;
+    return r+1;
+}
+
+int menosFreq (int v[], int N){ // 
+    int r = frequencia(v, N), i=0, ind = 0;
+    while(i<N){
+        if(frequencia(v+i, N-i)<r){r = frequencia(v+i, N-i); ind = i; i += r;}
+        else{i+= frequencia(v+i, N-i);}
+    }
+    return v[ind];
+}
+
+//31
+int maisFreq (int v[], int N){
+    int r = frequencia(v, N), i=0, ind = 0;
+    while(i<N){
+        if(frequencia(v+i, N-i)>r){r = frequencia(v+i, N-i); ind = i; i += r;}
+        else{i+= frequencia(v+i, N-i);}
+    }
+    return v[ind];	
+}
+
+//32
+int sequencia(int v[], int N){
+	int i;
+	for(i=0; i<N-1 && v[i]<=v[i+1]; i++);
+	return i+1;
+}
+
+int maxCresc (int v[], int N){
+	int r = sequencia(v,N), i=0;
+	while(i<N){
+		if(sequencia(v+i,N-i)>r){
+			r = sequencia(v+i,N-i);
+		}
+		i+= sequencia(v+i,N-i);
+	}
+	return r;
+}
+
+// 33
+
+void shiftEsquerdaArray(int v[], int N){
+    int i;
+    for(i=0; i<N; i++) v[i] = v[i+1];
+}
+
+int elimXRep(int x, int v[], int N){
+    int i, r =0;
+    for(i=0; i<N;){
+        if(v[i]==x){ 
+            shiftEsquerdaArray(v+i,N-i);
+            N--;
+            r++;
+        }
+        else i++;
+    }
+    return r;
+}
+
+int elimRep (int v[], int N){
+    int i;
+    for(i=0; i<N; i++){
+        N -= elimXRep(v[i], v+i+1, N-i-1);
+    }
+    return N;
+}
+
+// 34
+int elimRepOrd (int v[], int n){
+	int i;
+	for(i=0; i<n-1;){
+		if(v[i]==v[i+1]){ 
+			shiftEsquerdaArray(v+i+1, n-i-1);
+			n--;
+		}
+		else i++;
+	}
+	return n;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 int main(){
 
-    char str1[20] = "Ola", str2[10] = " tas bem?";
+    char str1[30] = "Guilherme Varela";
 
-    printf ("%ld\n", strlen (str1));
-
+    int x = contaPal("a a");
+	printf("%d", x);
     return 0;
 }
