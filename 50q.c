@@ -628,10 +628,64 @@ int elimRepOrd (int v[], int n){
 	return n;
 }
 
+// 35
+int comunsOrd (int a[], int na, int b[], int nb){
+	int r = 0, j = 0, i = 0;
 
+	while(i<na && j<nb){
+		if(a[i]==b[j]){
+			r++;
+			i++;
+			j++;
+		}
+		else if(a[i]>b[j]){
+			j++;
+		}
+		else i++;
+	}
 
+	return r;
+}
 
+// 36
+int comuns (int a[], int na, int b[], int nb){
+	int i, j, r=0;
+	for(i=0; i<na; i++){
+		for(j=0; j<nb; j++){
+			if(a[i]==b[j]){
+				r++;
+				break;
+			}
+		}
+	}
+	return r;
+}
 
+//37
+int minInd (int v[], int n){
+	int r=0, i, comp;
+	if(n==0) return 0;
+	comp = v[0];
+	for(i=1; i<n; i++){
+		if(comp>v[i]){
+			r=i;
+			comp = v[i];
+		}
+	}
+	return r;
+}
+
+//38
+void somasAc (int v[], int Ac [], int N){
+	int i, j;
+	for(i = 0; i<N; i++){
+		int temp = 0;
+		for(j=0; j<=i; j++){
+			temp += v[j];
+		}
+		Ac[i] = temp;
+	}
+}
 
 
 
