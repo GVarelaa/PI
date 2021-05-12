@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <math.h>
 
 // 1
 
@@ -687,16 +688,169 @@ void somasAc (int v[], int Ac [], int N){
 	}
 }
 
+//39
+int triSup (int N, float m [N][N]){
+	int r=1, i,j;
+
+	for(i=0; i<N; i++){
+		for(j=0; j<i; j++){
+			if(m[i][j]!=0){
+				r=0;
+				break;
+			}
+		}
+	}
+
+	return r;
+}
+
+//40
+void transposta (int N, float m [N][N]){
+	int i,j;
+	for(i=0; i<N; i++){
+		for(j=0; j<i; j++){
+			int temp;
+			temp = m[i][j];
+			m[i][j] = m[j][i];
+			m[j][i] = temp;
+		}
+	}
+}
+
+//42
+int unionSet (int N, int v1[N], int v2[N], int r[N]){
+	int len=0, i;
+	for(i=0; i<N; i++){
+		r[i] = v1[i] || v2[i];
+		len += r[i];
+	}
+	return len;
+}
+
+//43
+int intersectSet (int N, int v1[N], int v2[N],int r[N]){
+	int len=0, i;
+	for(i=0; i<N; i++){
+		r[i] = v1[i] && v2[i];
+		len += r[i];
+	}
+	return len;	
+}
+
+//44
+int intersectMSet (int N, int v1[N], int v2[N],int r[N]){
+	int len=0, i;
+	for(i=0; i<N; i++){
+		if(v1[i])
+		r[i] = v1[i] && v2[i];
+		len += r[i];
+	}
+	return len;		
+}
+
+//47
+typedef enum movimento {
+	Norte, Oeste, Sul, Este
+} Movimento;
+
+typedef struct posicao {
+	int x, y;
+} Posicao;
+
+Posicao posFinal (Posicao inicial, Movimento mov[], int N){
+	int i;
+	for(i=0; i<N; i++){
+		if(mov[i]==Norte) inicial.y++;
+		else if(mov[i]==Sul) inicial.y--;
+		else if(mov[i]==Este) inicial.x++;
+		else inicial.x--;
+	}
+	return inicial;
+}
+
+//48
+int caminho (Posicao inicial, Posicao final, Movimento mov[], int N){
+	int i, r=0;
+	for(i=0; i<N; i++){
+		if(inicial.y>final.y){
+			mov[i] = Sul;
+			inicial.y--;
+		}
+		else if(inicial.y<final.y){
+			mov[i] = Norte;
+			inicial.y++;
+		}
+		else if(inicial.x<final.x){
+			mov[i] = Este;
+			inicial.x++;
+		}
+		else if(inicial.x>final.x){
+			mov[i] = Oeste;
+			inicial.x--;
+		}
+		else break;
+	}
+
+	if(inicial.x!=final.x || inicial.y!=final.y) return -1;
+	else return i;
+}
+
+//49
+float distOrigem(Posicao pos){
+	float temp = pow(pos.x,2) + pow(pos.y,2);
+
+	return sqrt(temp);
+} 
 
 
+int maisCentral (Posicao pos[], int N){
+	if(N==0) return 0;
+	int r,i;
+	float dist = distOrigem(pos[0]);
+	r=0;
+
+	for(i=1; i<N; i++){
+		if(distOrigem(pos[i])<dist){
+			dist = distOrigem(pos[i]);
+			r = i;
+		}
+	}
+	return r;
+}
+
+//50
+float dist(Posicao p1, Posicao p2){
+	float temp = pow((p1.x-p2.x),2) + pow((p1.y-p2.y),2); 
+	return sqrt(temp);
+}
 
 
+int vizinhos (Posicao p, Posicao pos[], int N){
+	int i, r=0;
+	for(i=0; i<N; i++){
+		if(dist(p, pos[i])==1) r++;
+	}
+	return r;
+}
 
+//2 parte
 
+typedef struct lligada {
+	int valor;
+	struct lligada *prox;
+} *LInt;
 
+//51
+int length (LInt l){
+	int r = 0;
+	
+	while(l!=NULL){
+		r++;
+		l=l->prox;
+	}
 
-
-
+	return r;
+}
 
 
 
