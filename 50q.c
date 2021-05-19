@@ -852,11 +852,525 @@ int length (LInt l){
 	return r;
 }
 
+//52
+void freeL (LInt l){
+	LInt ant;
+	while(l){
+		ant = l;
+		l=l->prox;
+		free(ant);
+	}
+}
+
+//53
+void imprimeL (LInt l){
+	while(l){
+		printf("%d\n", l->valor);
+		l=l->prox;
+	}
+}
+
+//54
+LInt reverseL (LInt l){
+	LInt aux = l, aux2;
+	int len=0, i, j;
+
+    if(l==NULL) return NULL;
+
+	while(aux->prox!=NULL){
+		len++;
+		aux=aux->prox;
+	}
+
+	LInt ret = aux;
+	
+	for(i=0; i<len; i++){
+	    aux2 = l;
+	    j = len-i-1;
+	    for(;j>0;j--){
+	        aux2=aux2->prox;
+	    }
+		aux->prox = aux2;
+		aux=aux->prox;
+	}
+    aux->prox = NULL;
+
+	return ret;
+}
+
+//55
+void insertOrd (LInt *l, int x){
+	LInt newNode = malloc(sizeof(struct lligada));
+	newNode->valor =  x;
+	newNode->prox = NULL;
+
+    if((*l)==NULL){
+        (*l)=newNode;
+        return;
+    }
+
+	while((*l)!=NULL && x > (*l)->valor){
+		l=&((*l)->prox);
+	}
+	
+	LInt temp = (*l);
+	
+	(*l) = newNode;
+	newNode->prox = temp;
+    
+}
+
+//56
+int removeOneOrd (LInt *l, int x){
+	int r=1;
+
+	while((*l)!=NULL && (*l)->valor!=x){
+		l=&((*l)->prox);
+	}
+
+	if((*l)!=NULL && (*l)->valor == x){
+		(*l)=(*l)->prox;
+		r=0;
+	}
+
+	return r;
+}
+
+//57
+void merge (LInt *r, LInt a, LInt b){
+	while(a && b){
+		if(a->valor < b->valor){
+			(*r) = a;
+			a=a->prox;
+			r=&((*r)->prox);
+		}
+		else{
+			(*r) = b;
+			b=b->prox;
+			r=&((*r)->prox);			
+		}
+	}
+
+	if(a){
+		while(a){
+			(*r) = a;
+			a=a->prox;
+			r=&((*r)->prox);			
+		}
+	}
+	else if(b){
+		while(b){
+			(*r) = b;
+			b=b->prox;
+			r=&((*r)->prox);			
+		}
+	}
+}
+
+//58
+void splitQS (LInt l, int x, LInt *mx, LInt *Mx){
+	while(l!=NULL){
+		if(l->valor<x){
+			(*mx) = l;
+			mx = &((*mx)->prox);
+		}
+		else{
+			(*Mx) = l;
+			Mx = &((*Mx)->prox);
+		}
+		l=l->prox;
+	}
+	*mx = NULL;
+	*Mx = NULL;
+}
+
+//59
+LInt parteAmeio (LInt *l){
+	int len=length(*l);
+    LInt ret=*l, prev=NULL;
+    
+	int meio = len/2;
+
+    if(meio==0) return NULL;
+
+	while(meio>0){
+		prev = *l; 
+		(*l) = (*l)->prox;
+		meio--;
+	}
+	prev->prox = NULL;
+
+	return ret;
+ }
+
+//60
+ int removeAll (LInt *l, int x){
+	int r = 0;
+
+	while(*l){
+		if((*l)->valor == x){
+			(*l) = (*l)->prox;
+			r++;
+		}
+		else l=&((*l)->prox);
+	}
+
+	return r;
+ }
+
+//61
+int removeDups (LInt *l){
+	int ret = 0;
+	while(*l){
+		LInt *aux = &((*l)->prox);
+		while(*aux){
+			if((*aux)->valor == (*l)->valor){
+				(*aux) = (*aux)->prox;
+				ret++;
+			}
+			else aux=&((*aux)->prox);
+		}
+		l=&((*l)->prox);
+	}
+
+	return ret;
+}
+
+//62
+int removeMaiorL (LInt *l){
+	LInt *aux = &((*l)->prox);
+	int maior = (*l)->valor;
+
+	while(*aux){
+		if((*aux)->valor > maior) maior = (*aux)->valor;
+		aux=&((*aux)->prox);
+	}
+
+	while(*l){
+		if((*l)->valor == maior){
+			(*l) = (*l)->prox;
+			break;
+		}
+		else l = &((*l)->prox);
+	}
+
+	return maior;
+}
+
+//63
+void init (LInt *l){
+	if(*l==NULL) return;
+
+	while((*l)->prox){
+		l=&((*l)->prox);
+	}
+	*l = NULL;
+}
+
+//64
+void appendL (LInt *l, int x){
+	LInt new = malloc(sizeof(struct lligada));
+	new->valor = x;
+	new->prox = NULL;
+
+	if(*l == NULL){
+		*l = new;
+		return;
+	}
+
+	while((*l)->prox){
+		l=&((*l)->prox);
+	}
+	(*l)->prox = new;
+}
+
+//65
+void concatL (LInt *a, LInt b){
+	LInt *aux;
+	if(*a==NULL){
+	    *a = b;
+	    return;
+	}
+	else{
+		while((*a)->prox){
+			a = &((*a)->prox);
+		}
+		(*a)->prox = b;
+	}
+
+}
+
+//66
+LInt cloneL (LInt l){
+	if(l==NULL) return NULL;
+
+	LInt ret = malloc(sizeof(struct lligada));
+	ret->valor = l->valor;
+	ret->prox = cloneL(l->prox);
+	return ret;
+}
+
+//67
+LInt cloneRev (LInt l){
+	LInt ret=NULL, aux = l, ret2;
+	int len=0, i;
+
+	while(aux){
+		len++;
+		aux=aux->prox;
+	}
+	
+	for(; len>0; len--){
+		aux = l;
+		int j = len;
+		while(j-1>0){
+			aux=aux->prox;
+			j--;
+		}
+
+		LInt new = malloc(sizeof(struct lligada));
+		new->valor = aux->valor;
+		new->prox = NULL;
+
+		if(ret==NULL){
+			ret2 = new;
+			ret = ret2;
+		}
+		else{
+			ret2->prox = new;
+			ret2=ret2->prox;
+		}
+	}
+	
+	return ret;
+
+}
+
+//68
+int maximo (LInt l){
+	int max = l->valor;
+	
+	l=l->prox;
+	
+	while(l){
+		if(l->valor > max) max = l->valor;
+		l=l->prox;
+	}	
+
+	return max;
+}
+
+//69
+int take (int n, LInt *l){
+	LInt prev;
+	int ret = 0;
+
+	while(*l && n>0){
+		l = &((*l)->prox);
+		n--;
+		ret++;
+	}
+
+	while(*l){
+		prev = *l;
+		(*l) = (*l)->prox;
+		free(prev); 
+	}
+
+	return ret;
+}
+
+//70
+int drop (int n, LInt *l){
+	LInt prev, lenl = *l;
+	int ret = 0;
+
+	while(*l && n>0) {
+		prev = *l;
+		(*l) = (*l)->prox;
+		free(prev);
+		n--;
+		ret++;
+	}
+
+	return ret;
+}
+
+//71
+LInt Nforward (LInt l, int N){
+	while(l && N){
+		l=l->prox;
+		N--;
+	}
+	return l;
+}
+
+//72
+int listToArray (LInt l, int v[], int N){
+	int ret = 0,i;
+
+	for(i=0; l && i<N; i++, ret++){
+		v[i] = l->valor;
+		l=l->prox;
+	}
+
+	return ret;
+}
+
+//73
+LInt arrayToList (int v[], int N){
+	int i;
+	LInt l=NULL, ret=NULL;
+	
+	for(i=0; i<N; i++){
+		LInt newL = malloc(sizeof(struct lligada));
+		newL->valor = v[i];
+		newL->prox = NULL;
+		
+		if(l==NULL){
+		    l = newL;
+		    ret = l;
+		} 
+		else{
+		    l->prox = newL;
+		    l=l->prox;
+		}
+	}
+
+	return ret;
+}
+
+LInt arrayToList2 (int v[], int N){
+
+	if(N==0) return NULL;
+
+	LInt new = malloc(sizeof(struct lligada));
+	new->valor = v[0];
+	new->prox = arrayToList2(v+1, N-1);
+
+	return new;
+}
+
+//74
+LInt somasAcL (LInt l){
+	LInt ret=NULL, aux=NULL;
+	int i, j , soma=0, len=0;
+
+	while(l){
+
+		soma += l->valor;
+
+		LInt new = malloc(sizeof(struct lligada));
+		new->valor = soma;
+		new->prox = NULL;
+
+		if(ret==NULL) {
+			aux = new;
+			ret = aux;
+		}
+		else{
+			aux->prox = new;
+			aux=aux->prox;
+		}
+		l=l->prox;
+	}
+
+	return ret;
+}
+
+//75
+void remreps (LInt l){
+	while(l){
+		LInt aux = l->prox;
+		int cmp = l->valor;
+		while(aux){
+			if(aux->valor == l){
+				l->prox = aux->prox;
+				free(aux);
+			}
+			else{
+				aux=aux->prox;				
+			}
+		}
+		l=l->prox;
+	}
+}
+
+//76
+LInt rotateL (LInt l){
+	if(l == NULL || l->prox == NULL) return l;
+
+	LInt aux = l, ret = l->prox;
+
+	while(aux->prox){
+		aux = aux->prox;
+	}
+
+    aux->prox = l;
+    l->prox=NULL;
+
+	return ret;
+}
+
+//77
+LInt parte (LInt l){
+
+	if(l==NULL || l->prox == NULL) return NULL;
+
+	LInt ret;
+
+	ret = l;
+
+	l->prox = l->prox->prox;
+
+	ret->prox = parte(l->prox);
+
+	return ret;
+}
 
 
+typedef struct nodo {
+	int valor;
+	struct nodo *esq, *dir;
+} *ABin;
 
+//78
+int altura (ABin a){
+	int r1=0, r2=0;
 
+	if(a==NULL) return 0;
 
+	r1 = 1 + altura(a->esq);
+	r2 = 1 + altura(a->dir);
+
+	if(r1>r2) return r1;
+	else return r2;
+}
+
+//79
+ABin cloneAB (ABin arv){
+
+	if(arv==NULL) return NULL;
+
+	ABin ret = malloc(sizeof(struct nodo));
+	ret->valor = arv->valor;
+	ret->esq = cloneAB(arv->esq);
+	ret->dir = cloneAB(arv->dir);
+
+	return ret;
+}
+
+//80
+void mirror (ABin *arv){
+	if(*arv == NULL) return;
+
+	ABin temp = (*arv)->esq;
+	(*arv)->esq = (*arv)->dir;
+	(*arv)->dir = temp;
+
+	mirror(&((*arv)->esq));
+	mirror(&((*arv)->dir));
+}
 
 
 
